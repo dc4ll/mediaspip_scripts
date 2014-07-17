@@ -39,6 +39,10 @@
 # -* libtwolame
 # -* upgrade de MediaInfo en 0.7.61
 
+# Version 0.4.1
+# -* Package Installation by options (image, audio, text and video).
+# -* Installs necesary packages for all options.
+
 # Ce script lancé tout seul ne sert à rien
 # On s'arrête dès son appel
 
@@ -86,25 +90,59 @@ debian_wheezy_dep_install()
 	echo $(eval_gettext "Info apt maj paquets")
 	echo $(eval_gettext "Info apt maj paquets") 2>> $LOG >> $LOG
 	export DEBIAN_FRONTEND=noninteractive
-	apt-get -q -y --force-yes install build-essential curl subversion git-core checkinstall libcxxtools-dev yasm scons libboost-dev zlib1g-dev unzip \
-		apache2.2-common mysql-server php5-dev php5-mysql php5-sqlite php5-imagick php-pear php5-curl php5-gd libapache2-mod-php5 \
-		libmp3lame-dev libaacplus-dev libopencore-amrnb-dev libopencore-amrwb-dev libvpx-dev libtheora-dev librtmp-dev libfaac-dev libfaad-dev libmodplug-dev libgsm1-dev libopenjpeg-dev libxvidcore-dev libschroedinger-dev libspeex-dev libvorbis-dev libass-dev libtwolame-dev \
-		flac vorbis-tools imagemagick pngnq optipng libjpeg-progs \
-		tesseract* xpdf catdoc unoconv poppler-utils texi2html \
-		2>> $LOG >> $LOG || return 1
+
+	echo "Installing necesary packages"
+	echo "Installing necesary packages" 2>> $LOG >> $LOG
+	apt-get -q -y --force-yes install build-essential curl subversion git-core checkinstall libcxxtools-dev yasm scons libboost-dev zlib1g-dev \
+	unzip apache2.2-common mysql-server php5-dev php5-mysql php5-sqlite php-pear php5-curl libapache2-mod-php5 php5-ldap \
+	unoconv texi2html \
+	2>> $LOG >> $LOG || return 1
+
+	while [[ $# > 0 ]] ; do
+        	case "$1" in
+			-image) echo "Installing image packages" 
+				echo "Installing image packages" 2>> $LOG >> $LOG
+				apt-get -q -y --force-yes install php5-imagick php5-gd libopenjpeg-dev imagemagick pngnq optipng libjpeg-progs \
+				tesseract* \
+				2>> $LOG >> $LOG || return 1
+				shift;;
+			-audio) echo "Installing audio packages"
+				echo "Installing audio packages" 2>> $LOG >> $LOG
+				apt-get -q -y --force-yes install libmp3lame-dev libaacplus-dev libopencore-amrnb-dev libopencore-amrwb-dev \
+				librtmp-dev libfaac-dev libfaad-dev libmodplug-dev libgsm1-dev libspeex-dev libvorbis-dev libtwolame-dev flac \
+				vorbis-tools \
+				2>> $LOG >> $LOG || return 1
+				shift;;
+			-text)  echo "Installing text packages"
+				echo "Installing text packages" 2>> $LOG >> $LOG
+				apt-get -q -y --force-yes install xpdf poppler-utils catdoc \
+				2>> $LOG >> $LOG || return 1
+				shift;;
+			-video) echo "Installing video packages"
+				echo "Installing video packages" 2>> $LOG >> $LOG
+				apt-get -q -y --force-yes install libvpx-dev libtheora-dev libxvidcore-dev libschroedinger-dev libass-dev \
+				2>> $LOG >> $LOG || return 1
+				shift;;
+    			-*) usage "Wrong arguments"
+				shift;;
+    			*) break;;
+    		esac
+    	done
 	apt-get clean 2>> $LOG >> $LOG || return 1
+	echo "***** Check Point *****"
+	exit 1
 	echo
-	
+
 	verif_svn_protocole || return 1
-	
+#para audio y video
 	debian_wheezy_libopus_install || return 1
-	
+#para audio y video
 	flvtool_plus_install || return 1
-	
+#para audio y video
 	media_info_install || return 1
-	
+#para texto e imagenes
 	#xmpphp_install || return 1
-	
+
 	cd $CURRENT
 	return 0
 }
@@ -153,7 +191,7 @@ debian_wheezy_x264_install ()
 	export TEXTDOMAIN=mediaspip
 	SOFT="libx264"
 	cd "$SRC_INSTALL"
-	
+
 	# Si on a déjà les sources, on ne fait que les mettre à jour
 	if [ -d $SRC_INSTALL/x264/.git ];then
 		echo $(eval_gettext 'Info debut $SOFT update')
@@ -171,7 +209,7 @@ debian_wheezy_x264_install ()
 		cd $SRC_INSTALL/x264
 		NEWREVISION=$(git_log ./ | awk '/^== Short Revision:/ { print $4 }') 2>> $LOG >> $LOG
 	fi
-	
+
 	REVISION=$(pkg-config --modversion x264  2>> $LOG | awk '{ print $2 }')
 	if [ "$REVISION" = "$NEWREVISION" ]; then
 		echo $(eval_gettext 'Info a jour $SOFT')
@@ -214,9 +252,9 @@ debian_wheezy_ffmpeg_install ()
 	if [ "$VERSION_ACTUELLE" = "version" ];then
 		VERSION_ACTUELLE=$(ffmpeg -version  2> /dev/null |grep ffmpeg -m 1 |awk '{print $3}')
 	fi
-	
+
 	cd $SRC_INSTALL/$FFMPEG_PATH
-	
+
 	if [ "$FFMPEG_VERSION" = "$VERSION_ACTUELLE" ] && [ "$FFMPEG_FORCE_INSTALL" = "non" ];then
 		echo $(eval_gettext "Info a jour $SOFT")
 		echo $(eval_gettext "Info a jour $SOFT") 2>> $LOG >> $LOG
@@ -253,12 +291,12 @@ debian_wheezy_apache_install ()
 	echo $(eval_gettext "Info apache mod headers") 2>> $LOG >> $LOG
 	a2enmod headers 2>> $LOG >> $LOG || return 1
 	echo
-	
+
 	echo $(eval_gettext "Info apache mod rewrite")
 	echo $(eval_gettext "Info apache mod rewrite") 2>> $LOG >> $LOG
 	a2enmod rewrite 2>> $LOG >> $LOG || return 1
 	echo
-	
+
 	echo $(eval_gettext "Info apache mod deflate")
 	echo $(eval_gettext "Info apache mod deflate") 2>> $LOG >> $LOG
 	a2enmod deflate 2>> $LOG >> $LOG || return 1
@@ -266,7 +304,7 @@ debian_wheezy_apache_install ()
 	echo $(eval_gettext "Info apache mod deflate fichier") 2>> $LOG >> $LOG
 	cp ./configs/apache/deflate.conf /etc/apache2/conf.d/ 2>> $LOG >> $LOG || return 1
 	echo
-	
+
 	echo $(eval_gettext "Info apache mod expires")
 	echo $(eval_gettext "Info apache mod expires") 2>> $LOG >> $LOG
 	a2enmod expires 2>> $LOG >> $LOG || return 1
@@ -274,28 +312,28 @@ debian_wheezy_apache_install ()
 	echo $(eval_gettext "Info apache mod expires fichier") 2>> $LOG >> $LOG
 	cp ./configs/apache/expires.conf /etc/apache2/conf.d/ 2>> $LOG >> $LOG || return 1
 	echo
-	
+
 	echo $(eval_gettext "Info apache mime fichier")
 	echo $(eval_gettext "Info apache mime fichier") 2>> $LOG >> $LOG
 	cp ./configs/apache/mediaspip_mime.conf /etc/apache2/conf.d/ 2>> $LOG >> $LOG || return 1
 	echo
-	
+
 	echo $(eval_gettext 'Info php max_upload $PHP_UPLOAD_SIZE')
 	echo "file_uploads = On" > /etc/php5/conf.d/mediaspip_upload.ini
 	echo "upload_max_filesize = $PHP_UPLOAD_SIZE" >> /etc/php5/conf.d/mediaspip_upload.ini
 	echo "post_max_size = $PHP_UPLOAD_SIZE" >> /etc/php5/conf.d/mediaspip_upload.ini
 	echo "suhosin.get.max_value_length = 1024" >> /etc/php5/conf.d/mediaspip_upload.ini
 	echo
-	
+
 	if [ $SPIP_TYPE = "ferme" ] || [ $SPIP_TYPE = "ferme_full" ];then
 		cp $CURRENT/configs/apache/vhosts/mediaspip_ferme_example.conf /etc/apache2/sites-available/ 2>> $LOG >> $LOG
 	else
 		cp $CURRENT/configs/apache/vhosts/mediaspip_simple_example.conf /etc/apache2/sites-available/ 2>> $LOG >> $LOG
 	fi
-		
+
 	echo $(eval_gettext "Info apache reload")
 	echo $(eval_gettext "Info apache reload") 2>> $LOG >> $LOG
 	/etc/init.d/apache2 force-reload 2>> $LOG >> $LOG || return 1
-	
+
 	echo
 }

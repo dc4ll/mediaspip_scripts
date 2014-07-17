@@ -63,7 +63,7 @@ error ()
 	if [ ! -z "$PID" ];then
 		kill "$PID" 2>> $LOG >> $LOG
 	fi
-	kill "$$" 2>> $LOG >> $LOG	
+	kill "$$" 2>> $LOG >> $LOG
 	exit 1
 }
 
@@ -92,19 +92,19 @@ git_log()
 	# Show various information about this git directory
 	if [ -d .git ]; then
 		printf "== Remote URL: `git remote -v`"
-	
+
 		printf "== Remote Branches: "
 		git branch -r
 		printf "\n"
-	
+
 		printf "== Local Branches:"
 		git branch
 		printf "\n"
-	
+
 		printf "== Configuration (.git/config)"
 		cat .git/config
 		printf "\n"
-	
+
 		printf "== Most Recent Commit"
 		git --no-pager log --max-count=1
 		printf "\n"
@@ -116,7 +116,7 @@ git_log()
 
 verif_internet_connexion()
 {
-	wget -q --tries=10 --timeout=5 http://www.google.com -O /tmp/index.google &> /dev/null
+	wget -q --tries=10 --timeout=15 http://www.google.com -O /tmp/index.google &> /dev/null
 	sleep 1
 	if [ ! -s /tmp/index.google ];then
 		rm /tmp/index.google
@@ -198,7 +198,7 @@ mediaspip_munin_install()
 		# - munin-node est disponible (prouve l'installation de Munin)
 		# - SPIP_TYPE est soit ferme soit ferme_full car les scripts sont fait pour monitorer des fermes
 		if [ "$SPIP_TYPE" = "ferme" -o "$SPIP_TYPE" = "ferme_full" ]; then
-			chmod +x bin/spip_taille_instance.sh 
+			chmod +x bin/spip_taille_instance.sh
 			if [ ! -h /usr/local/bin/spip_taille_instance.sh ]; then
 				ln -s "$SRC_INSTALL"/mediaspip_munin/bin/spip_taille_instance.sh /usr/local/bin 2>> $LOG >> $LOG || return 1
 			fi
@@ -215,7 +215,7 @@ mediaspip_munin_install()
 				ln -s "$SRC_INSTALL"/mediaspip_munin/plugins/mediaspip_media /etc/munin/plugins/ 2>> $LOG >> $LOG || return 1
 			fi
 			if [ -z $(grep  "\[mediaspip" /etc/munin/plugin-conf.d/munin-node) ]; then
-				echo -e "\n[mediaspip*]\nuser root\n\n" >> /etc/munin/plugin-conf.d/munin-node 2>> $LOG || return 1	
+				echo -e "\n[mediaspip*]\nuser root\n\n" >> /etc/munin/plugin-conf.d/munin-node 2>> $LOG || return 1
 			fi
 			if [ -z $(grep "\[spip_mutu" /etc/munin/plugin-conf.d/munin-node) ]; then
 				echo -e "\n[spip_mutu*]\nuser root\n\n" >> /etc/munin/plugin-conf.d/munin-node 2>> $LOG || return 1
@@ -264,10 +264,10 @@ flvtool_plus_install()
 xmpphp_install(){
 	export TEXTDOMAINDIR=$CURRENT/locale
 	export TEXTDOMAIN=mediaspip
-	
+
 	VERSION_ACTUELLE=$(php --ri xmpPHPToolkit |grep ^version |awk '{print $3}') 2>> $LOG >> $LOG
 	SOFT="XMP PHP"
-	
+
 	if [ "$XMPPHP_VERSION" = "$VERSION_ACTUELLE" ];then
 		echo $(eval_gettext 'Info a jour $SOFT')
 		echo $(eval_gettext 'Info a jour $SOFT') 2>> $LOG >> $LOG

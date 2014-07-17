@@ -84,15 +84,21 @@
 # -* Installation de mediaspip_munin si possible et intéressant :
 # cf https://github.com/kent1D/mediaspip_munin/
 
+# Version 0.7.3 :
+# - Installation of specific MediaSPIP: Image, Audio, Text, Video
+# - Installs only necesary files according to the requeriment
+
 # On pose une variable sur le répertoire courant permettant de savoir 
 # d'où le script est lancé
 CURRENT=$(pwd)
 
 LOG=/dev/null
 
+# Exporting to global variables necesary files
 export TEXTDOMAINDIR=$CURRENT/locale
 export TEXTDOMAIN=mediaspip
 
+# Calling gettext.sh into a variable
 I18NLIB=$(which gettext.sh)
 
 # source in I18N library - shown above
@@ -104,6 +110,7 @@ else
 	printf "apt-get -y install gettext gettext-base"
 	exit 1
 fi
+
 
 VERSION_INSTALL="0.8.0"
 
@@ -124,6 +131,7 @@ VERSION ${VERSION_INSTALL}
 "
 
 # Inclusion d'un logo aléatoire ;)
+# Including a random logo
 if [ -d "fun" ];then
 	DIR="./fun/*.sh"
 	RANDOMFILE=$(ls $DIR | shuf -n1)
@@ -131,15 +139,18 @@ if [ -d "fun" ];then
 fi
 
 # On affiche le logo ... en vert
+# Logo printed in green
 tput setaf 2;
 printf "$LOGO"
 tput sgr0;
 
 # On inclut le fichier de fonctions
+# Inserting MediaSPIP functions
 FICHIER='mediaspip_functions.sh'
 . ./mediaspip_functions.sh || (tput setaf 1;printf "$(eval_gettext 'Erreur fichier $FICHIER')";tput sgr0;kill "$$";exit 1)
 
 # On inclut le fichier d'installation de SPIP et de MediaSPIP
+# Inserting SPIP and MediaSPIP installation file
 FICHIER='mediaspip_spip_installation.sh'
 . ./mediaspip_spip_installation.sh || error "$(eval_gettext 'Erreur fichier $FICHIER')"
 
@@ -148,17 +159,22 @@ FICHIER='mediaspip_spip_installation.sh'
 # - doit être lancé par root
 # - doit être sur une distribution que l'on connait 
 #
-
+# - if the installation was launched with root permisions
+# - if the base OS is supported by this installer
 LSB_RELEASE=$(which lsb_release)
 
 if [ "$LSB_RELEASE" ] && [ -x $LSB_RELEASE ]; then
 	DISTRIB=$($LSB_RELEASE -si | tr [:upper:] [:lower:])
 	DISTRO=$($LSB_RELEASE -sc | tr [:upper:] [:lower:])
+
 # Cas d'Ubuntu
+# Ubuntu case
 elif [ -r /etc/lsb-release ];then
 	DISTRIB=$(cat /etc/lsb-release | grep ID | cut -c 12- | tr '[A-Z]' '[a-z]')
 	DISTRO=$(cat /etc/lsb-release | grep CODE | cut -c 18- | tr '[A-Z]' '[a-z]')
+
 # Cas de debian
+# Debian case
 elif [ -r /etc/debian_version ]; then
 	DISTRIB="debian"
 	DISTRIB_VERSION=$(cat /etc/debian_version)
@@ -173,7 +189,9 @@ elif [ -r /etc/debian_version ]; then
 		echo_erreur "$(eval_gettext 'Erreur script distro inconnue')"
 		exit 1
 	fi
+
 # Cas de redhat (?) et centos
+# Red Hat and CentOS case
 elif [ -r /etc/redhat-release ]; then
 	DISTRIB=$(cat /etc/redhat-release |awk  '{ print $1 }' | tr '[A-Z]' '[a-z]' | tr '[:punct:]' '_')
 	DISTRO=$(cat /etc/redhat-release |awk  '{ print $3 }' | tr '[A-Z]' '[a-z]' | tr '[:punct:]' '_')
@@ -182,6 +200,7 @@ else
 	exit 1
 fi
 
+# Checking if the distribution is one of the following:
 OKDISTRO='squeeze wheezy lucid precise quantal raring';
 case "$OKDISTRO" in 
 	*$DISTRO*);;
@@ -205,12 +224,14 @@ fi
 #
 
 # Où sont téléchargées les sources
+# Location of source files
 SRC_INSTALL="/usr/local/src"
 
-# location of log file
+# Location of log file
 LOG="/var/log/mediaspip_install.log"
 
 # On récupère le nombre de cores de la machine pour les utiliser lors des compilations
+# Number of cpu cores that will be used for compilations
 NO_OF_CPUCORES=`grep -c ^processor /proc/cpuinfo 2>/dev/null`
 if [ ! "$?" = "0" ]
 then
@@ -221,6 +242,7 @@ fi
 PHP_UPLOAD_SIZE="150M"
 
 # Emplacement final de SPIP et MediaSPIP
+# Place in where SPIP and MediaSIP will be installed
 SPIP="/var/www/mediaspip"
 
 # Version de SPIP (svn ou stable)
@@ -240,12 +262,47 @@ SPIP_SVN="svn://trac.rezo.net/spip/branches/spip-3.0"
 FFMPEG_FORCE_INSTALL="non"
 
 # On insère un fichier de modification de ces variables si présent
+# Inserting a modification file if it exists...
 if [ -r /etc/default/mediaspip ]; then
 	. /etc/default/mediaspip
 fi
 
+# Setting up the instalation according from given parameters
+
 while [ $# -gt 0 ]; do
 	case $1 in
+
+		--only-image)
+			INSTALL_IMAGE="-image"
+			tput setaf 2
+			echo "Only image installation was selected"
+			tput sgr0
+		shift;;
+
+		--only-audio)
+			INSTALL_AUDIO="-audio"
+			tput setaf 2
+			echo "Only audio installation was selected"
+			tput sgr0
+		shift;;
+
+		--only-text)
+			INSTALL_TEXT="-text"
+			INSTALL_IMAGE="-image"
+			tput setaf 2
+			echo "Only text installation was selected"
+			tput sgr0
+		shift;;
+
+		--only-video)
+			INSTALL_VIDEO="-video"
+			INSTALL_IMAGE="-image"
+			INSTALL_AUDIO="-audio"
+			tput setaf 2
+			echo "Only video installation was selected"
+			tput sgr0
+		shift;;
+
 		--help|-h) HELP=$(eval_gettext "Help message")
 		VERSION_AFFICHER=$(eval_gettext 'Info mediaspip installation $VERSION_INSTALL')
 		echo "$VERSION_AFFICHER"
@@ -334,7 +391,13 @@ while [ $# -gt 0 ]; do
 		shift 2;;
 	esac
 done
-
+if [ -z ${INSTALL_IMAGE+x} ] && [ -z ${INSTALL_AUDIO+x} ] && [ -z ${INSTALL_TEXT+x} ] && [ -z ${INSTALL_VIDEO+x} ]; then
+	INSTALL_IMAGE="-image"
+	INSTALL_AUDIO="-audio"
+	INSTALL_TEXT="-text"
+	INSTALL_VIDEO="-video"
+fi
+echo "'$INSTALL_IMAGE' '$INSTALL_AUDIO' '$INSTALL_TEXT' '$INSTALL_VIDEO'"
 # Si LC_MESSAGES n'est pas en en ni fr, on le force en en
 LANGUES_COMPAT='en fr'
 if [ -n "${LC_MESSAGES}" ]; then
@@ -350,8 +413,9 @@ case $LANGUE in
 	*)
 		export LC_MESSAGES=en_US.UTF-8
 		;;
-esac 
+esac
 
+# Verifying the internet connection for instalation
 verif_internet_connexion || error "$(eval_gettext 'Erreur internet connexion')"
 
 if [ "$(id -u)" != "0" ]; then
@@ -363,6 +427,9 @@ if [ "$ERROR" = "oui" ]; then
 	exit 1
 fi
 
+##########################
+# Setting up som variables
+##########################
 FFMPEG_VERSION="1.2.4"
 FFMPEG_URL="http://ffmpeg.org/releases/ffmpeg-1.2.4.tar.bz2"
 FFMPEG_FICHIER="ffmpeg-1.2.4.tar.bz2"
@@ -388,8 +455,12 @@ XMPPHP_URL="http://downloads.sourceforge.net/project/xmpphptoolkit/xmp_php_toolk
 XMPPHP_FICHIER="xmp_php_toolkit-2.0-rev14.rar"
 XMPPHP_PATH="xmp_toolkit"
 
+#########################################
+# Installing the specific distro packages
+#########################################
 FICHIER="distribs/$DISTRIB_$DISTRO.sh"
 . ./distribs/"$DISTRIB"_"$DISTRO".sh 2>> $LOG >> $LOG || error "$(eval_gettext 'Erreur fichier $FICHIER')"
+
 
 ###############################
 # Suite des fonctions du script
@@ -455,14 +526,13 @@ fi
 echo "Le script démarre" >> $LOG
 echo "Installation des dépendances logicielles" 2>> $LOG >> $LOG
 
-
 # Installation de plusieurs dependances 
 # (librairies et binaires)
 eval_gettext "Titre dependances logicielles"
 echo
 echo
 
-"$DISTRIB"_"$DISTRO"_dep_install || error "$(eval_gettext 'Erreur installation regarde log $LOG')"
+"$DISTRIB"_"$DISTRO"_dep_install $INSTALL_IMAGE $INSTALL_AUDIO $INSTALL_TEXT $INSTALL_VIDEO || error "$(eval_gettext 'Erreur installation regarde log $LOG')"
 
 echo_reussite "$(eval_gettext 'End dependances')"
 echo

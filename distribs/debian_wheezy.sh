@@ -112,6 +112,10 @@ debian_wheezy_dep_install()
 				librtmp-dev libfaac-dev libfaad-dev libmodplug-dev libgsm1-dev libspeex-dev libvorbis-dev libtwolame-dev flac \
 				vorbis-tools \
 				2>> $LOG >> $LOG || return 1
+				
+				debian_wheezy_libopus_install || return 1
+				flvtool_plus_install || return 1
+				media_info_install || return 1
 				shift;;
 			-text)  echo "Installing text packages"
 				echo "Installing text packages" 2>> $LOG >> $LOG
@@ -134,12 +138,7 @@ debian_wheezy_dep_install()
 	echo
 
 	verif_svn_protocole || return 1
-#para audio y video
-	debian_wheezy_libopus_install || return 1
-#para audio y video
-	flvtool_plus_install || return 1
-#para audio y video
-	media_info_install || return 1
+
 #para texto e imagenes
 	#xmpphp_install || return 1
 

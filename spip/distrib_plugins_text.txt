@@ -1,0 +1,91 @@
+# A
+ancres_douces;svn://zone.spip.org/spip-zone/_plugins_/ancres_douces
+
+# B
+bigbrother;svn://zone.spip.org/spip-zone/_plugins_/bigbrother/trunk
+
+# C
+calendrier_mini;svn://zone.spip.org/spip-zone/_plugins_/calendrier_mini/trunk
+cextras2;svn://zone.spip.org/spip-zone/_plugins_/champs_extras/core/trunk
+cextras2_interface;svn://zone.spip.org/spip-zone/_plugins_/champs_extras/interface/trunk
+chosen;svn://zone.spip.org/spip-zone/_plugins_/chosen/trunk
+criteres_suivant_precedent;svn://zone.spip.org/spip-zone/_plugins_/criteres_suivant_precedent
+
+# D
+diogene_geo;svn://zone.spip.org/spip-zone/_plugins_/diogene/diogene_complements/diogene_geo/trunk
+diogene_mots;svn://zone.spip.org/spip-zone/_plugins_/diogene/diogene_complements/diogene_mots/trunk
+diogene_notation;svn://zone.spip.org/spip-zone/_plugins_/diogene/diogene_complements/diogene_notation/trunk
+diogene_spipicious;svn://zone.spip.org/spip-zone/_plugins_/diogene/diogene_complements/diogene_spipicious/trunk
+
+# F
+fulltext;svn://zone.spip.org/spip-zone/_plugins_/fulltext
+
+# E
+epub_reader;svn://zone.spip.org/spip-zone/_plugins_/epub_reader/trunk
+
+# G
+gis;svn://zone.spip.org/spip-zone/_plugins_/gis/trunk
+google_analytics;svn://zone.spip.org/spip-zone/_plugins_/google_analytics
+googleplus1;svn://zone.spip.org/spip-zone/_plugins_/googleplus1
+gravatar;svn://zone.spip.org/spip-zone/_plugins_/gravatar
+
+# I
+importateur_contacts;svn://zone.spip.org/spip-zone/_plugins_/importateur_contacts;
+inscription3;svn://zone.spip.org/spip-zone/_plugins_/inscription/trunk
+intranet;svn://zone.spip.org/spip-zone/_plugins_/intranet/trunk
+
+# L
+legendes;svn://zone.spip.org/spip-zone/_plugins_/legendes
+
+# M
+memoization;svn://zone.spip.org/spip-zone/_plugins_/memoization
+mesfavoris;svn://zone.spip.org/spip-zone/_plugins_/mesfavoris
+metadonnees_photo;svn://zone.spip.org/spip-zone/_plugins_/metadonnees_photo/trunk
+microblog;svn://zone.spip.org/spip-zone/_plugins_/microblog
+minibando;svn://zone.spip.org/spip-zone/_plugins_/minibando/trunk
+multilang;svn://zone.spip.org/spip-zone/_plugins_/multilang/trunk
+
+# N
+notation;svn://zone.spip.org/spip-zone/_plugins_/notation/trunk
+nuage;svn://zone.spip.org/spip-zone/_plugins_/nuage/trunk
+
+# O
+oembed;svn://zone.spip.org/spip-zone/_plugins_/oembed
+openid;svn://zone.spip.org/spip-zone/_plugins_/openid
+openinviter;svn://zone.spip.org/spip-zone/_plugins_/openinviter
+opensearch;svn://zone.spip.org/spip-zone/_plugins_/opensearch
+
+# P
+pages;svn://zone.spip.org/spip-zone/_plugins_/pages/trunk
+parrainage;svn://zone.spip.org/spip-zone/_plugins_/parrainage/trunk;
+pdfjs;svn://zone.spip.org/spip-zone/_plugins_/pdfjs
+piecon;svn://zone.spip.org/spip-zone/_plugins_/piecon/trunk
+podcast;svn://zone.spip.org/spip-zone/_plugins_/podcast/trunk
+polyhierarchie;svn://zone.spip.org/spip-zone/_plugins_/polyhierarchie/trunk
+porte_plume_documents;http://svn.aires-de-confluxence.info/svn/plugins_spip/porte_plume_documents
+
+# R
+recommander;svn://zone.spip.org/spip-zone/_plugins_/recommander
+
+# S
+saveauto;svn://zone.spip.org/spip-zone/_plugins_/saveauto/trunk
+signalement;svn://zone.spip.org/spip-zone/_plugins_/signalement/trunk
+socialtags;svn://zone.spip.org/spip-zone/_plugins_/socialtags
+smush;svn://zone.spip.org/spip-zone/_plugins_/smush_images/trunk
+skel_mediablog;svn://zone.spip.org/spip-zone/_squelettes_/mediaspip/skel_mediablog/trunk
+sparkstats;svn://zone.spip.org/spip-zone/_plugins_/sparkstats/trunk
+spip_piwik_2_0;svn://zone.spip.org/spip-zone/_plugins_/spip_piwik/spip_piwik_2_0
+spip-bonux;svn://zone.spip.org/spip-zone/_plugins_/spip-bonux-3
+spipicious_jquery;svn://zone.spip.org/spip-zone/_plugins_/spipicious_jquery/trunk
+
+# V
+verifier;svn://zone.spip.org/spip-zone/_plugins_/verifier
+
+# X
+xmp_php;svn://zone.spip.org/spip-zone/_plugins_/xmp_php/trunk
+
+# Y
+yaml;svn://zone.spip.org/spip-zone/_plugins_/yaml
+
+# Z
+zeroclipboard;svn://zone.spip.org/spip-zone/_plugins_/zeroclipboard/trunk

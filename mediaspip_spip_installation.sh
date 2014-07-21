@@ -168,7 +168,37 @@ mediaspip_install()
 
 	FICHIER='spip/distrib_plugins-dist.txt'
 	if [ -r $CURRENT/spip/distrib_plugins-dist.txt ];then
+		echo "Installing core plugins-dist"
+		echo "Installing core plugins-dist" 2>> $LOG >> $LOG
 		recuperer_svn $CURRENT/$FICHIER extension
+		### Selecting the correct file
+		while [[ $# > 0 ]] ; do
+			case "$1" in
+				-image) echo "Installing image plugins-dist"
+					echo "Installing image plugins-dist" 2>> $LOG >> $LOG
+					FILE='spip/distrib_plugins-dist_image.txt'
+					recuperer_svn $CURRENT/$FILE extension
+					shift;;
+				-audio) echo "Installing audio plugins-dist"
+					echo "Installing audio plugins-dist" 2>> $LOG >> $LOG
+					FILE='spip/distrib_plugins-dist_audio.txt'
+					recuperer_svn $CURRENT/$FILE extension
+					shift;;
+				-text)  echo "Installing text plugins-dist"
+					echo "Installing text plugins-dist" 2>> $LOG >> $LOG
+					FILE='spip/distrib_plugins-dist_text.txt'
+					recuperer_svn $CURRENT/$FILE extension
+					shift;;
+				-video) echo "Installing video plugins-dist"
+					echo "Installing video plugins-dist" 2>> $LOG >> $LOG
+					FILE='spip/distrib_plugins-dist_video.txt'
+					recuperer_svn $CURRENT/$FILE extension
+					shift;;
+				-*) 	usage "Wrong arguments"
+					shift;;
+	    			*) 	break;;
+	    		esac
+    		done
 	else
 		error $(eval_gettext 'Erreur fichier $FICHIER')
 	fi
@@ -216,7 +246,37 @@ mediaspip_install()
 
 		FICHIER='spip/distrib_plugins.txt'
 		if [ -r $CURRENT/$FICHIER ];then
+			echo "Installing core plugins"
+			echo "Installing core plugins" 2>> $LOG >> $LOG
 			recuperer_svn $CURRENT/$FICHIER plugin
+			### Selecting the correct file 	
+			while [[ $# > 0 ]] ; do
+				case "$1" in
+					-image) echo "Installing image plugins"
+						echo "Installing image plugins" 2>> $LOG >> $LOG
+						FILE='spip/distrib_plugins_image.txt'
+						recuperer_svn $CURRENT/$FILE plugin
+						shift;;
+					-audio) echo "Installing audio plugins"
+						echo "Installing audio plugins" 2>> $LOG >> $LOG
+						FILE='spip/distrib_plugins_audio.txt'
+						recuperer_svn $CURRENT/$FILE plugin
+						shift;;
+					-text)  echo "Installing text plugins"
+						echo "Installing text plugins" 2>> $LOG >> $LOG
+						FILE='spip/distrib_plugins_text.txt'
+						recuperer_svn $CURRENT/$FILE plugin
+						shift;;
+					-video) echo "Installing video plugins"
+						echo "Installing video plugins" 2>> $LOG >> $LOG
+						FILE='spip/distrib_plugins_video.txt'
+						recuperer_svn $CURRENT/$FILE plugin
+						shift;;
+					-*) 	usage "Wrong arguments"
+						shift;;
+		    			*) 	break;;
+	    			esac
+    			done				
 		else
 			error $(eval_gettext 'Erreur fichier $FICHIER')
 		fi

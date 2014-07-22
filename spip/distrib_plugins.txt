@@ -40,7 +40,7 @@ legendes;svn://zone.spip.org/spip-zone/_plugins_/legendes
 # M
 memoization;svn://zone.spip.org/spip-zone/_plugins_/memoization
 mesfavoris;svn://zone.spip.org/spip-zone/_plugins_/mesfavoris
-metadonnees_photo;svn://zone.spip.org/spip-zone/_plugins_/metadonnees_photo/trunk
+#metadonnees_photo;svn://zone.spip.org/spip-zone/_plugins_/metadonnees_photo/trunk
 microblog;svn://zone.spip.org/spip-zone/_plugins_/microblog
 minibando;svn://zone.spip.org/spip-zone/_plugins_/minibando/trunk
 multilang;svn://zone.spip.org/spip-zone/_plugins_/multilang/trunk
@@ -58,9 +58,9 @@ opensearch;svn://zone.spip.org/spip-zone/_plugins_/opensearch
 # P
 pages;svn://zone.spip.org/spip-zone/_plugins_/pages/trunk
 parrainage;svn://zone.spip.org/spip-zone/_plugins_/parrainage/trunk;
-pdfjs;svn://zone.spip.org/spip-zone/_plugins_/pdfjs
+#pdfjs;svn://zone.spip.org/spip-zone/_plugins_/pdfjs
 piecon;svn://zone.spip.org/spip-zone/_plugins_/piecon/trunk
-podcast;svn://zone.spip.org/spip-zone/_plugins_/podcast/trunk
+#podcast;svn://zone.spip.org/spip-zone/_plugins_/podcast/trunk
 polyhierarchie;svn://zone.spip.org/spip-zone/_plugins_/polyhierarchie/trunk
 porte_plume_documents;http://svn.aires-de-confluxence.info/svn/plugins_spip/porte_plume_documents
 
@@ -82,7 +82,7 @@ spipicious_jquery;svn://zone.spip.org/spip-zone/_plugins_/spipicious_jquery/trun
 verifier;svn://zone.spip.org/spip-zone/_plugins_/verifier
 
 # X
-xmp_php;svn://zone.spip.org/spip-zone/_plugins_/xmp_php/trunk
+#xmp_php;svn://zone.spip.org/spip-zone/_plugins_/xmp_php/trunk
 
 # Y
 yaml;svn://zone.spip.org/spip-zone/_plugins_/yaml

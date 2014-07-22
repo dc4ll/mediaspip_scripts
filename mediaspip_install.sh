@@ -274,7 +274,7 @@ while [ $# -gt 0 ]; do
 
 		--only-image)
 			INSTALL_IMAGE="-image"
-			#DISABLE_FFMPEG="yes"
+			DISABLE_FFMPEG="yes"
 			tput setaf 2
 			echo "Only image installation was selected"
 			tput sgr0
@@ -282,7 +282,6 @@ while [ $# -gt 0 ]; do
 
 		--only-audio)
 			INSTALL_AUDIO="-audio"
-			#DISABLE_FFMPEG="yes"
 			tput setaf 2
 			echo "Only audio installation was selected"
 			tput sgr0
@@ -291,7 +290,7 @@ while [ $# -gt 0 ]; do
 		--only-text)
 			INSTALL_TEXT="-text"
 			INSTALL_IMAGE="-image"
-			#DISABLE_FFMPEG="yes"
+			DISABLE_FFMPEG="yes"
 			tput setaf 2
 			echo "Only text installation was selected"
 			tput sgr0
@@ -301,7 +300,6 @@ while [ $# -gt 0 ]; do
 			INSTALL_VIDEO="-video"
 			INSTALL_IMAGE="-image"
 			INSTALL_AUDIO="-audio"
-			#DISABLE_FFMPEG="yes"			
 			tput setaf 2
 			echo "Only video installation was selected"
 			tput sgr0

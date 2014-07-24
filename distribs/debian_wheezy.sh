@@ -133,8 +133,6 @@ debian_wheezy_dep_install()
     		esac
     	done
 	apt-get clean 2>> $LOG >> $LOG || return 1
-	echo "***** Check Point *****"
-	exit 1
 	echo
 
 	verif_svn_protocole || return 1
